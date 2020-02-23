@@ -1,0 +1,102 @@
+chess=[0,' ',' ',' ',' ',' ',' ',' ',' ',' ']
+p1=p2=''
+switch=1
+result='continue'
+def printboard():
+    '''
+    列印棋盤
+    '''
+    print(' {} | {} | {} \n---|---|---\n {} | {} | {} \n---|---|---\n {} | {} | {} '\
+          .format(chess[7],chess[8],chess[9],chess[4],chess[5],chess[6],chess[1],chess[2],chess[3]))
+    
+def criteria(chess):
+    '''
+    輸入棋盤，判定是否結束遊戲
+    '''
+    if chess[1]==chess[2]==chess[3]=='O' or\
+        chess[4]==chess[5]==chess[6]=='O' or\
+        chess[7]==chess[8]==chess[9]=='O' or\
+        chess[7]==chess[4]==chess[1]=='O' or\
+        chess[8]==chess[5]==chess[2]=='O' or\
+        chess[9]==chess[6]==chess[3]=='O' or\
+        chess[7]==chess[5]==chess[3]=='O' or\
+        chess[1]==chess[5]==chess[9]=='O' :
+        return 'O'
+    if chess[1]==chess[2]==chess[3]=='X' or\
+        chess[4]==chess[5]==chess[6]=='X' or\
+        chess[7]==chess[8]==chess[9]=='X' or\
+        chess[7]==chess[4]==chess[1]=='X' or\
+        chess[8]==chess[5]==chess[2]=='X' or\
+        chess[9]==chess[6]==chess[3]=='X' or\
+        chess[7]==chess[5]==chess[3]=='X' or\
+        chess[1]==chess[5]==chess[9]=='X' :
+        return 'X'
+    if not ' ' in chess:
+        return 'Tie'
+    return 'continue'
+    
+def setup():
+    global p1,p2,switch,chess,result
+    chess=[0,' ',' ',' ',' ',' ',' ',' ',' ',' ']
+    p1=p2=''
+    switch=1
+    result='continue'
+
+
+    print('####################\n圈圈叉叉遊戲開始，\n請玩家A先選擇圈或叉，選圈者先下。\n請依數字鍵盤位置輸入1~9。')
+    chess=[0,1,2,3,4,5,6,7,8,9]
+    printboard()
+    chess=[0,' ',' ',' ',' ',' ',' ',' ',' ',' ']
+    p1=input('玩家A想當圈圈或叉叉？請輸入英文"O"或"X"：').upper()
+    if p1=='O':
+        p2='X'
+        switch=1
+        print('玩家A為"O"，玩家B為"X"，玩家A先下')
+    elif p1=='X':
+        p2='O'
+        switch=2
+        print('玩家A為"X"，玩家B為"O"，玩家B先下')
+    else:
+        print('請依規定輸入O或X，不要亂來!!\n不給你玩了！！！')
+        result='na'
+
+
+def play():
+    global chess,switch
+    if switch==1:
+        x=int(input('玩家A請選擇位置：'))
+        if chess[x]!=' ':
+            print('請選擇空白格！')
+            return
+        else:
+            chess[x]=p1
+            switch=2
+            return
+    if switch==2:
+        x=int(input('玩家B請選擇位置：'))
+        if chess[x]!=' ':
+            print('請選擇空白格！')
+            return
+        else:
+            chess[x]=p2
+            switch=1
+            return
+restart='yes'
+while restart.lower()=='yes':
+    result='continue'
+    setup()    
+    while result=='continue':
+        printboard()
+        play()
+        result=criteria(chess)
+        #print(p1,p2,result,chess)
+    if result=='O' or result=='X':
+        printboard()
+        if result=='O' and p1=='O':
+            print('玩家A取得勝利！')
+        else:
+            print('玩家B取得勝利！')
+    if result=='Tie':
+        printboard()
+        print('兩人平手！')
+    restart=input('遊戲結束，是否再來一局？輸入yes/no：')
